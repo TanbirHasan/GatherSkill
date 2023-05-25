@@ -1,0 +1,19 @@
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 50px;
+  background-color: #1C2833;
+}
+
+.menulist {
+  display: flex;
+  gap: 15px;
+}
+
+.menulistitem {
+  list-style: none;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  cursor: pointer;
+}

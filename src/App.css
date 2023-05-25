@@ -1,0 +1,20 @@
+
+/* font Style */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+
+
+
+/* font */
+h3,h2,p{
+  font-family: 'Roboto', sans-serif;
+}
+
+h2{
+  font-size: 32px;
+  color: #1F618D;
+}
+
+h3{
+  font-size: 14px;
+  color: #5DADE2;
+}

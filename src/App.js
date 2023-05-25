@@ -1,10 +1,14 @@
 
 import './App.css';
+import Banner from './components/Banner/Banner';
+import Layout from './components/Layout/Layout';
 
 function App() {
   return (
     <div className="App">
-      <h2>Education Website</h2>
+      <Layout>
+        <Banner/>
+      </Layout>
     </div>
   );
 }
