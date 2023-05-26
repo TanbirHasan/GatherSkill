@@ -10,7 +10,7 @@ export default function Navbar() {
       </div>
       <div className={styles.menulinkbox}>
         <ul className={styles.menulist}>
-          <li className={styles.menulistitem}>Home</li>
+          <li className={styles.menulistitem}><Link to="/">Home</Link></li>
           <li className={styles.menulistitem}>About</li>
           <li className={styles.menulistitem}>Course</li>
           <li className={styles.menulistitem}>Contact</li>

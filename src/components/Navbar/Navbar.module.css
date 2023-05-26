@@ -32,3 +32,22 @@ header {
 }
 
 
+/* Search filed style */
+.searchbox {
+  position: relative;
+  display: inline-block;
+}
+
+.searchbox input {
+  padding-right: 30px; /* Space for the search icon */
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  height: 30px;
+}
+
+.searchbox .search-icon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: #aaa;
+}

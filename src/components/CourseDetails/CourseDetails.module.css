@@ -1,6 +1,55 @@
+.videoContainer {
+  text-align: center;
+  width: 77%;
+  overflow: hidden;
+  
+}
+
+.videoFile{
+    height: auto;
+}
+
+.courses {
+  height: 100vh;
+}
+
+.coursesInner {
+  display: flex;
+  width: 80%;
+  margin: auto;
+  gap: 40px;
+}
+
+.courseContent {
+  width: 33%;
+  padding: 0px 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+/* Search filed style */
+.searchbox {
+  width: 100%;
+}
+
+.searchbox input {
+  padding-right: 30px; 
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  height: 30px;
+}
+
+.searchbox .search-icon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: #aaa;
+}
 
 
-.videoContainer{
-    max-width: 500px;
-    margin: 0 auto;
+.videoLink{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
