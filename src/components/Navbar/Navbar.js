@@ -6,14 +6,29 @@ export default function Navbar() {
   return (
     <header className={styles.header}>
       <div>
-        <img src='https://static.vecteezy.com/system/resources/previews/000/586/123/original/book-reading-logo-and-symbols-template-icons-vector.jpg' height='50' width='60'/>
+        <img
+          src="https://static.vecteezy.com/system/resources/previews/000/586/123/original/book-reading-logo-and-symbols-template-icons-vector.jpg"
+          height="50"
+          width="60"
+        />
       </div>
       <div className={styles.menulinkbox}>
         <ul className={styles.menulist}>
-          <li className={styles.menulistitem}><Link to="/">Home</Link></li>
-          <li className={styles.menulistitem}>About</li>
-          <li className={styles.menulistitem}>Course</li>
-          <li className={styles.menulistitem}>Contact</li>
+          <Link to="/" className={styles.navLink}>
+            <li className={styles.menulistitem}>Home</li>
+          </Link>
+          <Link to="/about" className={styles.navLink}>
+            {" "}
+            <li className={styles.menulistitem}>About</li>
+          </Link>
+          <Link to="/course" className={styles.navLink}>
+            {" "}
+            <li className={styles.menulistitem}>Course</li>
+          </Link>
+          <Link to="/contact" className={styles.navLink}>
+            {" "}
+            <li className={styles.menulistitem}>Contact</li>
+          </Link>
         </ul>
         <div class={styles.searchbox}>
           <input type="text" placeholder="Search..." />
@@ -21,10 +36,14 @@ export default function Navbar() {
         </div>
         <div className={styles.auth}>
           <li className={styles.menulistitem}>
-            <Link to="" style={{textDecoration:'none', color:'white'}}>Login</Link>
+            <Link to="" style={{ textDecoration: "none", color: "white" }}>
+              Login
+            </Link>
           </li>
           <li className={styles.menulistitem}>
-            <Link to="" style={{textDecoration:'none', color:'white'}}>Register</Link>
+            <Link to="" style={{ textDecoration: "none", color: "white" }}>
+              Register
+            </Link>
           </li>
         </div>
       </div>

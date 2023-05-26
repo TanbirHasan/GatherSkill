@@ -26,6 +26,10 @@ header {
 
 }
 
+.navLink{
+  text-decoration: none;
+}
+
 .auth{
   display: flex;
   gap: 5px;

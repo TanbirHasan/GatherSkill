@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import style from "./style.css";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { BACKEND_URI } from "../../config/contants";
 
 export default function Courses() {
+
+ 
   return (
     <section class="articles">
       <div className="articles-inner">
