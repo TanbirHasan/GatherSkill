@@ -1,6 +1,28 @@
 
 
 footer{
-    background-color:#2E4053  ;
+    display: flex;
+    background-color: #D5DBDB;
     height: 40vh;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.footerbox{
+    display: flex;
+    flex-direction: column;
+    gap : 10px;
+}
+
+.footerboxLink{
+   text-decoration: none;
+   font-family: 'Roboto', sans-serif;
+   color: black;
+}
+
+.footerIconBox{
+    display: flex;
+    font-family: 'Roboto', sans-serif;
+    gap: 5px;
+    margin: 5px 0px;
 }
