@@ -36,12 +36,12 @@ export default function Navbar() {
         </div>
         <div className={styles.auth}>
           <li className={styles.menulistitem}>
-            <Link to="" style={{ textDecoration: "none", color: "white" }}>
+            <Link to="/login" style={{ textDecoration: "none", color: "white" }}>
               Login
             </Link>
           </li>
           <li className={styles.menulistitem}>
-            <Link to="" style={{ textDecoration: "none", color: "white" }}>
+            <Link to="/register" style={{ textDecoration: "none", color: "white" }}>
               Register
             </Link>
           </li>

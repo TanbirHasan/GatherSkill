@@ -22,6 +22,7 @@ export default function PostVideo() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(name,courseTag)
 
     const formData = new FormData();
     formData.append("name", name);
@@ -30,10 +31,13 @@ export default function PostVideo() {
       formData.append("videos", videos[i]);
     }
 
+    console.log(formData)
+
     try {
       await axios.post(`${BACKEND_URI}/api/v1/media/create`, formData);
       alert("Submitted successfully");
       setName("");
+      setCourseTag("")
       setVideos([]);
     } catch (error) {
       alert(error);

@@ -10,10 +10,7 @@ export default function Courses() {
       <div className="articles-inner">
         <article>
           <Link
-            to={{
-              pathname: "/courseDetails",
-              state: { query: "webdevelopment" },
-            }}
+            to="/courseDetails" state={{ query: "web" }}
           >
             <div class="article-wrapper">
               <figure>
@@ -52,10 +49,7 @@ export default function Courses() {
         </article>
         <article>
           <Link
-            to={{
-              pathname: "/courseDetails",
-              state: { query: "graphicDesign" },
-            }}
+             to="/courseDetails" state={{ query: "graphic" }}
           >
             <div class="article-wrapper">
               <figure>
@@ -95,10 +89,7 @@ export default function Courses() {
 
         <article>
           <Link
-            to={{
-              pathname: "/courseDetails",
-              state: { query: "digitalMarketing" },
-            }}
+             to="/courseDetails" state={{ query: "seo" }}
           >
             <div class="article-wrapper">
               <figure>

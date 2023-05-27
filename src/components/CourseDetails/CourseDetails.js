@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, CSSProperties } from "react";
 import styles from "./CourseDetails.module.css";
 import Layout from "../Layout/Layout";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { AiFillLock, AiOutlineUnlock } from "react-icons/ai";
 import axios from "axios";
 import { BACKEND_URI } from "../../config/contants";
@@ -21,6 +21,10 @@ export default function CourseDetails() {
   const [currentNote, setCurrentNote] = useState("");
   const [isLoading, setIsLoading] = useState(true); // Loading state
   let [color, setColor] = useState("#ffffff");
+  const location = useLocation();
+
+  console.log(location);
+
   const videoRef = useRef();
 
   const getAllMedias = () => {
@@ -83,95 +87,100 @@ export default function CourseDetails() {
 
   return (
     <Layout>
-      {
-        isLoading ?  <div style={{margin : '100px 0px'}}>
+      {isLoading ? (
+        <div style={{ margin: "100px 0px" }}>
           <ClipLoader
-        color={color}
-        loading={isLoading}
-        cssOverride={override}
-        size={100}
-        aria-label="Loading Spinner"
-        data-testid="loader"
-      />
-          </div> : <section className={styles.courses}>
-        <h2 className={styles.courseTitle}>Full Stack Crash Course</h2>
-        <div className={styles.coursesInner}>
-          <div className={styles.videoContainer}>
-            <video
-              autoPlay
-              controls
-              className={styles.videoPlayer}
-              ref={videoRef}
-            >
-              {selectedVideo && <source src={selectedVideo} type="video/mp4" />}
-              Your browser does not support the video tag.
-            </video>
-          </div>
-          <div className={styles.courseContent}>
-            <div className={styles.contentHeader}>
-              <h4 className={styles.contentTitle}>Course Content</h4>
-              <div className={styles.searchBox}>
-                <input
-                  type="text"
-                  placeholder="Search Lesson"
-                  className={styles.searchInput}
-                />
-                <i className={`fas fa-search ${styles.searchIcon}`}></i>
-              </div>
-            </div>
-            <div className={styles.videoLink}>
-              {courses &&
-                courses.map((item, index) =>
-                  item.videos.map((video, videoIndex) => (
-                    <div className={styles.videoBox} key={video}>
-                      <span className={styles.videoLockIcon}>
-                        {videoIndex <= selectedVideoIndex ? (
-                          <AiOutlineUnlock />
-                        ) : (
-                          <AiFillLock />
-                        )}
-                      </span>
-                      <button
-                        className={styles.videoButton}
-                        onClick={() => handleSelectVideo(video, videoIndex)}
-                      >
-                        Open Video
-                      </button>
-                    </div>
-                  ))
-                )}
-            </div>
-            <div className={styles.notesContainer}>
-              <h4 className={styles.notesTitle}>
-                {courses[selectedVideoIndex]?.title} Notes
-              </h4>
-              <form onSubmit={handleNoteSubmit} className={styles.notesForm}>
-                <textarea
-                  className={styles.noteInput}
-                  placeholder="Write your note..."
-                  value={currentNote}
-                  onChange={handleNoteChange}
-                />
-                <button className={styles.saveButton} type="submit">
-                  Save Note
-                </button>
-              </form>
-              <div className={styles.notesList}>
-                {notes.map((note, index) => (
-                  <div className={styles.noteItem} key={index}>
-                    <span className={styles.timestamp}>
-                      {formatTimestamp(note.timestamp)}
-                    </span>
-                    <p className={styles.noteContent}>{note.content}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+            color={color}
+            loading={isLoading}
+            cssOverride={override}
+            size={100}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
         </div>
-      </section>
-      }
-      
+      ) : (
+        <section className={styles.courses}>
+          <h2 className={styles.courseTitle}>Full Stack Crash Course</h2>
+          <div className={styles.coursesInner}>
+            <div className={styles.videoContainer}>
+              <video
+                autoPlay
+                controls
+                className={styles.videoPlayer}
+                ref={videoRef}
+              >
+                {selectedVideo && (
+                  <source src={selectedVideo} type="video/mp4" />
+                )}
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div className={styles.courseContent}>
+              <div className={styles.contentHeader}>
+                <h4 className={styles.contentTitle}>Course Content</h4>
+                <div className={styles.searchBox}>
+                  <input
+                    type="text"
+                    placeholder="Search Lesson"
+                    className={styles.searchInput}
+                  />
+                  <i className={`fas fa-search ${styles.searchIcon}`}></i>
+                </div>
+              </div>
+              <div className={styles.videoLink}>
+                {courses &&
+                  courses
+                    .filter((item) => item?.courseTag === location.state.query)
+                    .map((item, index) =>
+                      item.videos.map((video, videoIndex) => (
+                        <div className={styles.videoBox} key={video}>
+                          <span className={styles.videoLockIcon}>
+                            {videoIndex <= selectedVideoIndex ? (
+                              <AiOutlineUnlock />
+                            ) : (
+                              <AiFillLock />
+                            )}
+                          </span>
+                          <button
+                            className={styles.videoButton}
+                            onClick={() => handleSelectVideo(video, videoIndex)}
+                          >
+                            Open Video
+                          </button>
+                        </div>
+                      ))
+                    )}
+              </div>
+              <div className={styles.notesContainer}>
+                <h4 className={styles.notesTitle}>
+                  {courses[selectedVideoIndex]?.title} Notes
+                </h4>
+                <form onSubmit={handleNoteSubmit} className={styles.notesForm}>
+                  <textarea
+                    className={styles.noteInput}
+                    placeholder="Write your note..."
+                    value={currentNote}
+                    onChange={handleNoteChange}
+                  />
+                  <button className={styles.saveButton} type="submit">
+                    Save Note
+                  </button>
+                </form>
+                <div className={styles.notesList}>
+                  {notes.map((note, index) => (
+                    <div className={styles.noteItem} key={index}>
+                      <span className={styles.timestamp}>
+                        {formatTimestamp(note.timestamp)}
+                      </span>
+                      <p className={styles.noteContent}>{note.content}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
     </Layout>
   );
 }
