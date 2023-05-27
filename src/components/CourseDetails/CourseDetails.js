@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./CourseDetails.module.css";
 import Layout from "../Layout/Layout";
 import { Link } from "react-router-dom";
-import { AiFillLock } from "react-icons/ai";
+import { AiFillLock, AiOutlineUnlock } from "react-icons/ai";
 import axios from "axios";
 import { BACKEND_URI } from "../../config/contants";
 
 export default function CourseDetails() {
   const [courses, setCourses] = useState([]);
+  const [selectedVideo, setSelectedVideo] = useState("");
+  const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
+
+  const videoRef = useRef();
 
   const getAllMedias = () => {
     axios
@@ -16,11 +20,30 @@ export default function CourseDetails() {
       .catch((err) => console.log(err));
   };
 
-  console.log(courses[0]?.videos[0]?.video)
-
   useEffect(() => {
     getAllMedias();
   }, []);
+
+  useEffect(() => {
+    if (courses.length > 0) {
+      setSelectedVideo(`${BACKEND_URI}${courses[0]?.videos[0]}`);
+    }
+  }, [courses]);
+
+  useEffect(() => {
+    videoRef.current?.load();
+  }, [selectedVideo]);
+
+  const handleSelectVideo = (video, videoIndex) => {
+    if (videoIndex > selectedVideoIndex) {
+      setSelectedVideoIndex(videoIndex);
+    }
+    setSelectedVideo(`${BACKEND_URI}${video}`);
+  };
+  
+
+  console.log(selectedVideo);
+
   return (
     <Layout>
       <section className={styles.courses}>
@@ -28,10 +51,12 @@ export default function CourseDetails() {
         <div className={styles.coursesInner}>
           <div className={styles.videoContainer}>
             <video
+              autoPlay
               controls
-              style={{ width: "100%", height: "auto", minWidth: "800px" }}
+              style={{ width: "100%", height: "auto" }}
+              ref={videoRef}
             >
-              <source src={`${BACKEND_URI}${courses[0]?.videos[0]?.video}`} type="video/mp4" />
+              {selectedVideo && <source src={selectedVideo} type="video/mp4" />}
               Your browser does not support the video tag.
             </video>
           </div>
@@ -39,38 +64,30 @@ export default function CourseDetails() {
             <div>
               <h4 style={{ color: "white" }}>Course Content</h4>
             </div>
-            <div class={styles.searchbox}>
+            <div className={styles.searchbox}>
               <input type="text" placeholder="Search Lesson" />
-              <i class="fas fa-search search-icon"></i>
+              <i className="fas fa-search search-icon"></i>
             </div>
-            {/* tab */}
             <div className={styles.videoLink}>
-              {/* <div className={styles.videoBox}>
-                <span style={{ fontSize: "20px" }}>
-                  <AiFillLock />
-                </span>
-                <Link to="">Video 1</Link>
-              </div>
-              <div className={styles.videoBox}>
-                <span style={{ fontSize: "20px" }}>
-                  <AiFillLock />
-                </span>
-                <Link to="">Video 2</Link>
-              </div>
-              <div className={styles.videoBox}>
-                <span style={{ fontSize: "20px" }}>
-                  <AiFillLock />
-                </span>
-                <Link to="">Video 3</Link>
-              </div> */}
-              {courses && courses?.map((item) => (
-                <div className={styles.videoBox}>
-                  <span style={{ fontSize: "20px" }}>
-                    <AiFillLock />
-                  </span>
-                  <Link to="">Video 1</Link>
-                </div>
-              ))}
+              {courses &&
+                courses.map((item, index) =>
+                  item.videos.map((video, videoIndex) => (
+                    <div className={styles.videoBox} key={video}>
+                      <span style={{ fontSize: "20px" }}>
+                        {videoIndex <= selectedVideoIndex ? (
+                          <AiOutlineUnlock />
+                        ) : (
+                          <AiFillLock />
+                        )}
+                      </span>
+                      <button
+                        onClick={() => handleSelectVideo(video, videoIndex)}
+                      >
+                        Open Video
+                      </button>
+                    </div>
+                  ))
+                )}
             </div>
           </div>
         </div>
