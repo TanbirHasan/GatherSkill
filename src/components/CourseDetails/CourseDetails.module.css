@@ -1,68 +1,144 @@
-.videoContainer {
-  text-align: center;
-  width: 77%;
-  overflow: hidden;
-  
-  
-}
-
-.videoFile{
-    height: auto;
-}
-
 .courses {
-  height: 100vh;
-  background-color: #34495E;
-  padding: 15px;
+  background-color: #f5f5f5;
+  padding: 30px;
+}
+
+.courseTitle {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
 }
 
 .coursesInner {
   display: flex;
-  width: 80%;
-  margin: auto;
-  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.videoContainer {
+  flex: 1 1 70%;
+}
+
+.videoPlayer {
+  width: 100%;
+  height: auto;
 }
 
 .courseContent {
-  width: 33%;
-  padding: 0px 10px;
-  border: 1px solid black;
-  border-radius: 5px;
-  background-color: #2B1B42;
+  flex: 1 1 30%;
+  padding-left: 30px;
 }
 
-/* Search filed style */
-.searchbox {
-  width: 100%;
+.contentHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.searchbox input {
-  padding-right: 30px; 
-  width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  height: 30px;
+.contentTitle {
+  font-size: 20px;
+  color: #fff;
+  margin-right: 10px;
 }
 
-.searchbox .search-icon {
+.searchBox {
+  position: relative;
+}
+
+.searchInput {
+  padding: 8px 40px 8px 10px;
+  border: none;
+ 
+}
+
+.searchIcon {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  color: #aaa;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  color: #666;
 }
 
-
-.videoLink{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 10px;
+.videoLink {
+  margin-bottom: 20px;
 }
 
-.videoBox{
-    display: flex;
-    background-color: #CACFD2 ;
-    justify-content: space-between;
-    border: 1px solid black;
-    padding: 10px;
+.videoBox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.videoLockIcon {
+  font-size: 20px;
+  margin-right: 10px;
+  color: #666;
+}
+
+.videoButton {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.videoButton:hover {
+  background-color: #0069d9;
+}
+
+.notesContainer {
+  background-color: #fff;
+  padding: 20px;
+}
+
+.notesTitle {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.notesForm {
+  margin-bottom: 20px;
+}
+
+.noteInput {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+.saveButton {
+  padding: 8px 16px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.saveButton:hover {
+  background-color: #218838;
+}
+
+.notesList {
+  margin-top: 10px;
+  max-height: 160px; 
+  overflow-y: auto;
+}
+
+.noteItem {
+  margin-bottom: 10px;
+}
+
+.timestamp {
+  font-size: 14px;
+  color: #666;
+  margin-right: 10px;
+}
+
+.noteContent {
+  color: #333;
 }

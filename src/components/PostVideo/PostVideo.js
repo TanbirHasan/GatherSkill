@@ -1,28 +1,40 @@
 import React, { useState } from "react";
 import styles from "./PostVideo.module.css";
 import axios from "axios";
-import {BACKEND_URI} from "../../config/contants"
+import { BACKEND_URI } from "../../config/contants";
 import Layout from "../Layout/Layout";
 
 export default function PostVideo() {
-  const [name, setName] = useState();
+  const [name, setName] = useState("");
   const [videos, setVideos] = useState([]);
-  const handleSubmit = (e) => {
+
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
+
+  const handleVideoChange = (e) => {
+    setVideos(e.target.files);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let formdata = new FormData();
-    for(let key in videos){
-        formdata.append('videos',videos[key])
+    const formData = new FormData();
+    formData.append("name", name);
+    for (let i = 0; i < videos.length; i++) {
+      formData.append("videos", videos[i]);
     }
-    formdata.append('name',name);
 
-    axios.post(`${BACKEND_URI}/api/v1/media/create`,formdata)
-    .then(success => alert('Submitted successfully'))
-    .catch(error => {
-        alert(error)
-    })
-
+    try {
+      await axios.post(`${BACKEND_URI}/api/v1/media/create`, formData);
+      alert("Submitted successfully");
+      setName("");
+      setVideos([]);
+    } catch (error) {
+      alert(error);
+    }
   };
+
   return (
     <Layout>
       <div className={styles.postFileContainer}>
@@ -34,18 +46,20 @@ export default function PostVideo() {
               name="name"
               className={styles.formControl}
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={handleNameChange}
+              required
             />
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="name">Videos</label>
+            <label htmlFor="videos">Videos</label>
             <input
               type="file"
               name="videos"
               className={styles.formControl}
               multiple
               accept=".mp4, .mkv"
-              onChange={(e) => setVideos(e.target.files)}
+              onChange={handleVideoChange}
+              required
             />
           </div>
 

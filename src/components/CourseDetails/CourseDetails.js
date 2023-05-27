@@ -10,7 +10,8 @@ export default function CourseDetails() {
   const [courses, setCourses] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState("");
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
-
+  const [notes, setNotes] = useState([]);
+  const [currentNote, setCurrentNote] = useState("");
   const videoRef = useRef();
 
   const getAllMedias = () => {
@@ -40,9 +41,29 @@ export default function CourseDetails() {
     }
     setSelectedVideo(`${BACKEND_URI}${video}`);
   };
-  
+
+  const handleNoteChange = (e) => {
+    setCurrentNote(e.target.value);
+  };
+
+  const handleNoteSubmit = (e) => {
+    e.preventDefault();
+    const timestamp = videoRef.current.currentTime;
+    const note = {
+      timestamp,
+      content: currentNote,
+    };
+    setNotes([...notes, note]);
+    setCurrentNote("");
+  };
 
   console.log(selectedVideo);
+
+  function formatTimestamp(timestamp) {
+    const minutes = Math.floor(timestamp / 60);
+    const seconds = Math.floor(timestamp % 60);
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  }
 
   return (
     <Layout>
@@ -88,6 +109,32 @@ export default function CourseDetails() {
                     </div>
                   ))
                 )}
+            </div>
+            <div className={styles.notesContainer}>
+              <h4 className={styles.notesTitle}>
+                {courses[selectedVideoIndex]?.title} Notes
+              </h4>
+              <form onSubmit={handleNoteSubmit} className={styles.notesForm}>
+                <textarea
+                  className={styles.noteInput}
+                  placeholder="Write your note..."
+                  value={currentNote}
+                  onChange={handleNoteChange}
+                />
+                <button className={styles.saveButton} type="submit">
+                  Save Note
+                </button>
+              </form>
+              <div className={styles.notesList}>
+                {notes.map((note, index) => (
+                  <div className={styles.noteItem} key={index}>
+                    <span className={styles.timestamp}>
+                      {formatTimestamp(note.timestamp)}
+                    </span>
+                    <p className={styles.noteContent}>{note.content}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
