@@ -1,10 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, CSSProperties } from "react";
 import styles from "./CourseDetails.module.css";
 import Layout from "../Layout/Layout";
 import { Link } from "react-router-dom";
 import { AiFillLock, AiOutlineUnlock } from "react-icons/ai";
 import axios from "axios";
 import { BACKEND_URI } from "../../config/contants";
+import ClipLoader from "react-spinners/ClipLoader";
+
+const override = {
+  display: "block",
+  margin: "0 auto",
+  borderColor: "red",
+};
 
 export default function CourseDetails() {
   const [courses, setCourses] = useState([]);
@@ -12,13 +19,22 @@ export default function CourseDetails() {
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
   const [notes, setNotes] = useState([]);
   const [currentNote, setCurrentNote] = useState("");
+  const [isLoading, setIsLoading] = useState(true); // Loading state
+  let [color, setColor] = useState("#ffffff");
   const videoRef = useRef();
 
   const getAllMedias = () => {
+    setIsLoading(true); // Start loading
     axios
       .get(`${BACKEND_URI}/api/v1/media/all`)
-      .then((result) => setCourses(result.data))
-      .catch((err) => console.log(err));
+      .then((result) => {
+        setCourses(result.data);
+        setIsLoading(false); // Stop loading
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false); // Stop loading
+      });
   };
 
   useEffect(() => {
@@ -67,14 +83,24 @@ export default function CourseDetails() {
 
   return (
     <Layout>
-      <section className={styles.courses}>
-        <h2>Full Stack Crash Course</h2>
+      {
+        isLoading ?  <div style={{margin : '100px 0px'}}>
+          <ClipLoader
+        color={color}
+        loading={isLoading}
+        cssOverride={override}
+        size={100}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
+          </div> : <section className={styles.courses}>
+        <h2 className={styles.courseTitle}>Full Stack Crash Course</h2>
         <div className={styles.coursesInner}>
           <div className={styles.videoContainer}>
             <video
               autoPlay
               controls
-              style={{ width: "100%", height: "auto" }}
+              className={styles.videoPlayer}
               ref={videoRef}
             >
               {selectedVideo && <source src={selectedVideo} type="video/mp4" />}
@@ -82,19 +108,23 @@ export default function CourseDetails() {
             </video>
           </div>
           <div className={styles.courseContent}>
-            <div>
-              <h4 style={{ color: "white" }}>Course Content</h4>
-            </div>
-            <div className={styles.searchbox}>
-              <input type="text" placeholder="Search Lesson" />
-              <i className="fas fa-search search-icon"></i>
+            <div className={styles.contentHeader}>
+              <h4 className={styles.contentTitle}>Course Content</h4>
+              <div className={styles.searchBox}>
+                <input
+                  type="text"
+                  placeholder="Search Lesson"
+                  className={styles.searchInput}
+                />
+                <i className={`fas fa-search ${styles.searchIcon}`}></i>
+              </div>
             </div>
             <div className={styles.videoLink}>
               {courses &&
                 courses.map((item, index) =>
                   item.videos.map((video, videoIndex) => (
                     <div className={styles.videoBox} key={video}>
-                      <span style={{ fontSize: "20px" }}>
+                      <span className={styles.videoLockIcon}>
                         {videoIndex <= selectedVideoIndex ? (
                           <AiOutlineUnlock />
                         ) : (
@@ -102,6 +132,7 @@ export default function CourseDetails() {
                         )}
                       </span>
                       <button
+                        className={styles.videoButton}
                         onClick={() => handleSelectVideo(video, videoIndex)}
                       >
                         Open Video
@@ -139,6 +170,8 @@ export default function CourseDetails() {
           </div>
         </div>
       </section>
+      }
+      
     </Layout>
   );
 }

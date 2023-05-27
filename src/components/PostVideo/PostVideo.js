@@ -6,6 +6,7 @@ import Layout from "../Layout/Layout";
 
 export default function PostVideo() {
   const [name, setName] = useState("");
+  const [courseTag, setCourseTag] = useState("");
   const [videos, setVideos] = useState([]);
 
   const handleNameChange = (e) => {
@@ -16,11 +17,15 @@ export default function PostVideo() {
     setVideos(e.target.files);
   };
 
+  const handleCourseTag = (e) => {
+    setCourseTag(e.target.value);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
     formData.append("name", name);
+    formData.append("courseTag",courseTag)
     for (let i = 0; i < videos.length; i++) {
       formData.append("videos", videos[i]);
     }
@@ -47,6 +52,17 @@ export default function PostVideo() {
               className={styles.formControl}
               value={name}
               onChange={handleNameChange}
+              required
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="coursetag">CourseTag</label>
+            <input
+              type="text"
+              name="coursetag"
+              className={styles.formControl}
+              value={courseTag}
+              onChange={handleCourseTag}
               required
             />
           </div>
