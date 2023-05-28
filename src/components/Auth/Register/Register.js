@@ -1,118 +1,135 @@
-import React, { useState, setState } from 'react';
-import styles from './Register.module.css';
-import Layout from '../../Layout/Layout';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import styles from "./Register.module.css";
+import Layout from "../../Layout/Layout";
+import { Link } from "react-router-dom";
+import axios from "../../../api/axios";
+
+const REGISTER_URL = "/api/v1/register";
 
 const Register = () => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [agreeTerms, setAgreeTerms] = useState(false);
 
-    const [firstName, setFirstName] = useState(null);
-    const [lastName, setLastName] = useState(null);
-    const [email, setEmail] = useState(null);
-    const [password, setPassword] = useState(null);
-    const [confirmPassword, setConfirmPassword] = useState(null);
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    if (id === "username") {
+      setUsername(value);
+    } else if (id === "email") {
+      setEmail(value);
+    } else if (id === "password") {
+      setPassword(value);
+    }
+  };
 
+  const handleCheckboxChange = () => {
+    setAgreeTerms(!agreeTerms);
+  };
 
-    const handleInputChange = (e) => {
-        const { id, value } = e.target;
-        if (id === "firstName") {
-            setFirstName(value);
-        }
-        if (id === "lastName") {
-            setLastName(value);
-        }
-        if (id === "email") {
-            setEmail(value);
-        }
-        if (id === "password") {
-            setPassword(value);
-        }
-        if (id === "confirmPassword") {
-            setConfirmPassword(value);
-        }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    // Perform form validation
+    if (!username || !email || !password || !agreeTerms) {
+      alert(
+        "Please fill in all the required fields and agree to the terms and conditions."
+      );
+      return;
     }
 
-    const handleAgreeCheckboxChange = (e) => {
-        // setFormState({
-        //   ...formState,
-        //   agree: e.target.checked,
-        // });
-    };
+    try {
+      const response = await axios.post(
+        REGISTER_URL,
+        JSON.stringify({
+          username,
+          email,
+          password,
+        }),
+        {
+          headers: { "Content-type": "application/json" },
+          withCredentials: true,
+        }
+      );
 
-    const handleSubmit = () => {
-        console.log(firstName, lastName, email, password, confirmPassword);
+      alert("Registration successful:", response?.data);
+
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setAgreeTerms(false);
+    } catch (err) {
+        console.log(err)
+         if (err.response.status === 409) {
+            alert('Email Taken');
+        }
+        else if(!err?.response) {
+            alert('No Server Response');
+        } 
+        else {
+            alert('Registration Failed')
+        }
+       
     }
+  };
 
-    return (
+  return (
+    <Layout>
+      <div className={styles.loginContainer}>
+        <form className={styles.loginForm} onSubmit={handleSubmit}>
+          <h2>Register</h2>
+          <div className={styles.formGroup}>
+            <label htmlFor="username">First Name</label>
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
 
-        <Layout>
+          <div className={styles.formGroup}>
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div className={styles.checkbox}>
+            <input
+              type="checkbox"
+              id="agreeTerms"
+              name="agree"
+              value="true"
+              checked={agreeTerms}
+              onChange={handleCheckboxChange}
+              required
+            />
+            <p>I agree to the terms and conditions</p>
+          </div>
+          <button type="submit">Register</button>
 
-            <div className={styles.loginContainer}>
-                <form className={styles.loginForm} onSubmit={handleSubmit}>
-                    <h2>Register</h2>
-                    <div className={styles.formGroup}>
-                        <label htmlFor="firstname">First Name</label>
-                        <input
-                            type="text"
-                            id="firstname"
-                            value={firstName}
-                            onChange={handleInputChange}
-                            required
-                        />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label htmlFor="firstname">Last Name</label>
-                        <input
-                            type="text"
-                            id="firstname"
-                            value={firstName}
-                            onChange={handleInputChange}
-                            required
-                        />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label htmlFor="email">Email</label>
-                        <input
-                            type="email"
-                            id="email"
-                            value={email}
-                            onChange={handleInputChange}
-                            required
-                        />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label htmlFor="password">Password</label>
-                        <input
-                            type="password"
-                            id="password"
-                            value={password}
-                            onChange={handleInputChange}
-                            required
-                        />
+          <span>
+            Already have an account? <Link to="/login">Login here</Link>
+          </span>
+        </form>
+      </div>
+    </Layout>
+  );
+};
 
-                    </div>
-                    <div className={styles.checkbox}>
-                        <input
-                            type="checkbox"
-                            name="agree"
-                            value="true"
-                            checked=''
-                            onChange={handleAgreeCheckboxChange}
-                            required
-                        />
-                        <p>I agree to the terms and conditions</p>
-                    </div>
-                    <button type="submit">Register</button>
-
-                    <span>Already have an account? <Link to="/login">Login here</Link></span>
-
-                </form>
-            </div>
-
-        </Layout>
-
-
-    )
-}
-
-export default Register
+export default Register;
