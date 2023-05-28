@@ -27,7 +27,7 @@
     display: block;
     margin-bottom: 8px;
   }
-  span{
+  .logBottomText{
     display: flex;
     padding: 10px 0;
     margin: 10px auto;

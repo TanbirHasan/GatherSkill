@@ -1,25 +1,27 @@
 import React, { useEffect, useState } from "react";
-import style from "./style.css";
+import styles from "./Courses.module.css"
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URI } from "../../config/contants";
 
 export default function Courses() {
   return (
-    <section class="articles">
-      <div className="articles-inner">
+    <section className={styles.articles}>
+       <h2 style={{textAlign:'center',color:'white',paddingTop:'50px',fontWeight:400}} className={styles.courseSectionTitle}>Continue Your Courses</h2>
+      <div className={styles.articleInner}>
+    
         <article>
           <Link
             to="/courseDetails" state={{ query: "web" }}
           >
-            <div class="article-wrapper">
+            <div className={styles.articleWrapper}>
               <figure>
                 <img
                   src="https://www.simplilearn.com/ice9/free_resources_article_thumb/fullstack_php_js.jpg"
                   alt=""
                 />
               </figure>
-              <div class="article-body">
+              <div className={styles.articleBody}>
                 <h2>Full Stack Web</h2>
                 <p>
                   Curabitur convallis ac quam vitae laoreet. Nulla mauris ante,
@@ -29,7 +31,7 @@ export default function Courses() {
                 </p>
                 <a href="#" class="read-more">
                   Continue Courses{" "}
-                  <span class="sr-only">about this is some title</span>
+                  <span class={styles.srOnly}>about this is some title</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="icon"
@@ -51,14 +53,14 @@ export default function Courses() {
           <Link
              to="/courseDetails" state={{ query: "graphic" }}
           >
-            <div class="article-wrapper">
+            <div  className={styles.articleWrapper}>
               <figure>
                 <img
                   src="https://visme.co/blog/wp-content/uploads/2021/10/what-is-graphic-design-header-1200.png"
                   alt=""
                 />
               </figure>
-              <div class="article-body">
+              <div  className={styles.articleBody}>
                 <h2>Graphic Design</h2>
                 <p>
                   Curabitur convallis ac quam vitae laoreet. Nulla mauris ante,
@@ -68,7 +70,7 @@ export default function Courses() {
                 </p>
                 <a href="#" class="read-more">
                   Continue Courses{" "}
-                  <span class="sr-only">about this is some title</span>
+                  <span  className={styles.srOnly}>about this is some title</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="icon"
@@ -91,14 +93,14 @@ export default function Courses() {
           <Link
              to="/courseDetails" state={{ query: "seo" }}
           >
-            <div class="article-wrapper">
+            <div  className={styles.articleWrapper}>
               <figure>
                 <img
                   src="https://hetic.in/wp-content/uploads/2019/10/Digital-Marketing-1.jpg"
                   alt=""
                 />
               </figure>
-              <div class="article-body">
+              <div  className={styles.articleBody}>
                 <h2>Digital Marketing</h2>
                 <p>
                   Curabitur convallis ac quam vitae laoreet. Nulla mauris ante,
@@ -108,7 +110,7 @@ export default function Courses() {
                 </p>
                 <a href="#" class="read-more">
                   Continue Courses{" "}
-                  <span class="sr-only">about this is some title</span>
+                  <span  className={styles.srOnly}>about this is some title</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="icon"

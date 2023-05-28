@@ -1,28 +1,41 @@
-
-
-footer{
+footer {
     display: flex;
     background-color: #D5DBDB;
     height: 40vh;
     justify-content: space-evenly;
     align-items: center;
-}
-
-.footerbox{
+  }
+  
+  .footerbox {
     display: flex;
     flex-direction: column;
-    gap : 10px;
-}
-
-.footerboxLink{
-   text-decoration: none;
-   font-family: 'Roboto', sans-serif;
-   color: black;
-}
-
-.footerIconBox{
+    gap: 10px;
+  }
+  
+  .footerboxLink {
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+    color: black;
+  }
+  
+  .footerIconBox {
     display: flex;
     font-family: 'Roboto', sans-serif;
     gap: 5px;
     margin: 5px 0px;
-}
+  }
+  
+  /* Mobile responsive styles */
+  @media (max-width: 768px) {
+    footer {
+      flex-direction: column;
+      height: auto;
+      padding: 20px; 
+      text-align: center; 
+    }
+  
+    .footerbox {
+      gap: 20px; 
+    }
+  }
+  

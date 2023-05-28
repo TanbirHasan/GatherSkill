@@ -3,9 +3,9 @@ import styles from "./Login.module.css";
 import Layout from "../../Layout/Layout";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../../../context/AuthProvider";
-import axios from "../../../api/axios";
+import axios from "axios";
+import { BACKEND_URI } from "../../../config/contants";
 
-const LOGIN_URL = "/api/v1/auth";
 
 const Login = () => {
   const { setAuth } = useContext(AuthContext);
@@ -34,10 +34,10 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
-        LOGIN_URL,
+      const response = await axios.post(`${BACKEND_URI}/api/v1/auth`
+        ,
         JSON.stringify({
-          email,
+          email: email.toLowerCase(),
           password,
         }),
         {
@@ -104,7 +104,7 @@ const Login = () => {
             {isLoading ? "Logging in..." : "Login"}
           </button>
 
-          <span>
+          <span className={styles.logBottomText}>
             New to this page? <Link to="/register">Create new account</Link>
           </span>
         </form>

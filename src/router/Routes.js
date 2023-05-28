@@ -12,6 +12,8 @@ import Login from "../components/Auth/Login/Login";
 import Register from "../components/Auth/Register/Register";
 import AuthContext from "../context/AuthProvider";
 import { useContext, useEffect } from "react";
+import About from "../Pages/About/About";
+import ContactUs from "../Pages/Contact/Contact";
 
 
 const PrivateRoute = ({ children }) => {
@@ -33,6 +35,14 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+  },
+  {
+    path: "/about",
+    element: <About />,
+  },
+  {
+    path: "/contact",
+    element: <ContactUs />,
   },
   {
     path: "/courses",

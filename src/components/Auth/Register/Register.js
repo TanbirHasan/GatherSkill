@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import styles from "./Register.module.css";
 import Layout from "../../Layout/Layout";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "../../../api/axios";
+import axios from "axios";
+import { BACKEND_URI } from "../../../config/contants";
 
-const REGISTER_URL = "/api/v1/register";
+
+
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -41,8 +43,8 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post(
-        REGISTER_URL,
+      const response = await axios.post(`${BACKEND_URI}/api/v1/register`
+        ,
         JSON.stringify({
           username,
           email,
@@ -126,7 +128,7 @@ const Register = () => {
           </div>
           <button type="submit">Register</button>
 
-          <span>
+          <span className={styles.regBottomText}>
             Already have an account? <Link to="/login">Login here</Link>
           </span>
         </form>

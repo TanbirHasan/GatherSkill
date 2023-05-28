@@ -1,11 +1,17 @@
-import React, { useEffect, useRef, useState, CSSProperties } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  AiFillLock,
+  AiOutlineUnlock,
+  AiFillEdit,
+  AiFillDelete,
+} from "react-icons/ai";
+import axios from "axios";
+
+import ClipLoader from "react-spinners/ClipLoader";
 import styles from "./CourseDetails.module.css";
 import Layout from "../Layout/Layout";
 import { Link, useLocation } from "react-router-dom";
-import { AiFillLock, AiOutlineUnlock } from "react-icons/ai";
-import axios from "axios";
 import { BACKEND_URI } from "../../config/contants";
-import ClipLoader from "react-spinners/ClipLoader";
 
 const override = {
   display: "block",
@@ -19,25 +25,23 @@ export default function CourseDetails() {
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
   const [notes, setNotes] = useState([]);
   const [currentNote, setCurrentNote] = useState("");
-  const [isLoading, setIsLoading] = useState(true); // Loading state
+  const [isLoading, setIsLoading] = useState(true);
   let [color, setColor] = useState("#ffffff");
   const location = useLocation();
-
-  console.log(location);
 
   const videoRef = useRef();
 
   const getAllMedias = () => {
-    setIsLoading(true); // Start loading
+    setIsLoading(true);
     axios
       .get(`${BACKEND_URI}/api/v1/media/all`)
       .then((result) => {
         setCourses(result.data);
-        setIsLoading(false); // Stop loading
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
-        setIsLoading(false); // Stop loading
+        setIsLoading(false);
       });
   };
 
@@ -46,10 +50,15 @@ export default function CourseDetails() {
   }, []);
 
   useEffect(() => {
-    if (courses.length > 0) {
+    if (
+      courses.length > 0 &&
+      !courses.some((course) => course.courseTag === location.state.query)
+    ) {
+      setSelectedVideo("");
+    } else {
       setSelectedVideo(`${BACKEND_URI}${courses[0]?.videos[0]}`);
     }
-  }, [courses]);
+  }, [courses, location.state.query]);
 
   useEffect(() => {
     videoRef.current?.load();
@@ -70,6 +79,7 @@ export default function CourseDetails() {
     e.preventDefault();
     const timestamp = videoRef.current.currentTime;
     const note = {
+      id: Date.now(), 
       timestamp,
       content: currentNote,
     };
@@ -77,7 +87,9 @@ export default function CourseDetails() {
     setCurrentNote("");
   };
 
-  console.log(selectedVideo);
+  const handleNoteDelete = (noteId) => {
+    setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
+  };
 
   function formatTimestamp(timestamp) {
     const minutes = Math.floor(timestamp / 60);
@@ -94,13 +106,13 @@ export default function CourseDetails() {
             loading={isLoading}
             cssOverride={override}
             size={100}
-            aria-label="Loading Spinner"
+            aria-label="LoadingSpinner"
             data-testid="loader"
           />
         </div>
       ) : (
         <section className={styles.courses}>
-          <h2 className={styles.courseTitle}>Full Stack Crash Course</h2>
+          <h2 className={styles.courseTitle}></h2>
           <div className={styles.coursesInner}>
             <div className={styles.videoContainer}>
               <video
@@ -114,6 +126,22 @@ export default function CourseDetails() {
                 )}
                 Your browser does not support the video tag.
               </video>
+              <div className={styles.notesContainer}>
+                <h4 className={styles.notesTitle}>
+                  {courses[selectedVideoIndex]?.title} Take Notes
+                </h4>
+                <form onSubmit={handleNoteSubmit} className={styles.notesForm}>
+                  <textarea
+                    className={styles.noteInput}
+                    placeholder="Write your note..."
+                    value={currentNote}
+                    onChange={handleNoteChange}
+                  />
+                  <button className={styles.saveButton} type="submit">
+                    Save Note
+                  </button>
+                </form>
+              </div>
             </div>
             <div className={styles.courseContent}>
               <div className={styles.contentHeader}>
@@ -128,7 +156,13 @@ export default function CourseDetails() {
                 </div>
               </div>
               <div className={styles.videoLink}>
-                {courses &&
+                {!courses.some(
+                  (course) => course.courseTag === location.state.query
+                ) ? (
+                  <div>
+                    <h3>No Video Uploaded Yet</h3>
+                  </div>
+                ) : (
                   courses
                     .filter((item) => item?.courseTag === location.state.query)
                     .map((item, index) =>
@@ -145,34 +179,29 @@ export default function CourseDetails() {
                             className={styles.videoButton}
                             onClick={() => handleSelectVideo(video, videoIndex)}
                           >
-                            Open Video
+                            Video {videoIndex}
                           </button>
                         </div>
                       ))
-                    )}
-              </div>
-              <div className={styles.notesContainer}>
-                <h4 className={styles.notesTitle}>
-                  {courses[selectedVideoIndex]?.title} Notes
-                </h4>
-                <form onSubmit={handleNoteSubmit} className={styles.notesForm}>
-                  <textarea
-                    className={styles.noteInput}
-                    placeholder="Write your note..."
-                    value={currentNote}
-                    onChange={handleNoteChange}
-                  />
-                  <button className={styles.saveButton} type="submit">
-                    Save Note
-                  </button>
-                </form>
+                    )
+                )}
                 <div className={styles.notesList}>
                   {notes.map((note, index) => (
-                    <div className={styles.noteItem} key={index}>
+                    <div className={styles.noteItem} key={note.id}>
                       <span className={styles.timestamp}>
-                        {formatTimestamp(note.timestamp)}
+                        Time-Stamps : {formatTimestamp(note.timestamp)}
                       </span>
-                      <p className={styles.noteContent}>{note.content}</p>
+                      <p className={styles.noteContent}>
+                        <b>Notes</b> : {note.content}
+                      </p>
+                      <div className={styles.noteActions}>
+                        <button
+                          className={styles.noteAction}
+                          onClick={() => handleNoteDelete(note.id)}
+                        >
+                          <AiFillDelete />
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>

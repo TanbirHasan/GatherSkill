@@ -3,6 +3,7 @@ import Layout from "../../components/Layout/Layout";
 import Banner from "../../components/Banner/Banner";
 import Courses from "../../components/Courses/Courses";
 import AuthContext from "../../context/AuthProvider";
+import Blog from "../../components/Blog/Blog";
 
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
       {
         auth.accessToken &&   <Courses />
       }
+      <Blog/>
 
     </Layout>
   );
