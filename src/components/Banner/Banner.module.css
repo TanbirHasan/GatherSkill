@@ -3,9 +3,9 @@
 .learnSection{
     display: flex;
     align-items: center;
-    
+    padding:100px 0px;
     justify-content: center;
-    height: 100vh;
+    height: 100%;
     
 
    
@@ -17,3 +17,17 @@
     justify-content: space-evenly;
 
 }
+/* Responsive Styles */
+@media only screen and (max-width: 768px) {
+    .learnSectionInner{
+        display: flex;
+        align-items: center;
+        width: 100%;
+        flex-direction: column;
+        justify-content: space-evenly;
+    
+    }
+    .learnText{
+        padding: 20px;
+    }
+  }

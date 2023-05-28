@@ -1,13 +1,19 @@
-import { useState } from "react";
-import axios from "axios";
+import { useState, useContext } from "react";
 import styles from "./Login.module.css";
 import Layout from "../../Layout/Layout";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import AuthContext from "../../../context/AuthProvider";
+import axios from "../../../api/axios";
+
+const LOGIN_URL = "/api/v1/auth";
 
 const Login = () => {
+  const { setAuth } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate()
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -20,7 +26,6 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Perform form validation
     if (!email || !password) {
       alert("Please fill in all the required fields.");
       return;
@@ -29,21 +34,36 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      // Make API call using Axios
-      const response = await axios.post("http://localhost:8000/api/v1/auth", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        LOGIN_URL,
+        JSON.stringify({
+          email,
+          password,
+        }),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
 
-      // Handle the response as needed
       console.log("Login successful:", response?.data);
+      const accessToken = response?.data?.accessToken;
+      const roles = response?.data?.roles;
+      setAuth({ email, password, accessToken, roles });
 
-      // Clear form fields after successful submission
       setEmail("");
       setPassword("");
-    } catch (error) {
-      console.error("Login failed:", error.response?.data);
-      // Handle the error and display an appropriate message to the user
+      navigate("/")
+    } catch (err) {
+      if (!err?.response) {
+        alert("No Server Response");
+      } else if (err.response?.status === 400) {
+        alert("Missing Username or Password");
+      } else if (err.response?.status === 401) {
+        alert("Unauthorized");
+      } else {
+        alert("Login Failed");
+      }
     }
 
     setIsLoading(false);
@@ -74,7 +94,12 @@ const Login = () => {
               required
             />
           </div>
-          <button className={styles.forgetPassButton} onClick={() => console.log("Forgot Password?")}>Forgot Password?</button>
+          <span
+            className={styles.forgetPassButton}
+            onClick={() => console.log("Forgot Password?")}
+          >
+            Forgot Password?
+          </span>
           <button type="submit" disabled={isLoading}>
             {isLoading ? "Logging in..." : "Login"}
           </button>

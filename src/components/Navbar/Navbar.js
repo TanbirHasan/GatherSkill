@@ -1,12 +1,32 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import styles from "./Navbar.module.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import AuthContext from "../../context/AuthProvider";
+import { FaUserAlt } from 'react-icons/fa';
+import UserModal from "../UserModal/UserModal";
 
 export default function Navbar() {
+  const { auth ,setAuth} = useContext(AuthContext);
+
+  const [showModal, setShowModal] = useState(false);
+
+  const location = useLocation()
+  console.log(location)
+
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
+
+  const handleLogout = () => {
+    setAuth({})
+    setShowModal(false)
+  };
+
   return (
     <header className={styles.header}>
       <div>
         <img
+        className={styles.logo}
           src="https://static.vecteezy.com/system/resources/previews/000/586/123/original/book-reading-logo-and-symbols-template-icons-vector.jpg"
           height="50"
           width="60"
@@ -21,10 +41,6 @@ export default function Navbar() {
             {" "}
             <li className={styles.menulistitem}>About</li>
           </Link>
-          <Link to="/course" className={styles.navLink}>
-            {" "}
-            <li className={styles.menulistitem}>Course</li>
-          </Link>
           <Link to="/contact" className={styles.navLink}>
             {" "}
             <li className={styles.menulistitem}>Contact</li>
@@ -34,19 +50,22 @@ export default function Navbar() {
           <input type="text" placeholder="Search..." />
           <i class="fas fa-search search-icon"></i>
         </div>
-        <div className={styles.auth}>
-          <li className={styles.menulistitem}>
-            <Link to="/login" style={{ textDecoration: "none", color: "white" }}>
-              Login
-            </Link>
-          </li>
+        {
+          !auth.accessToken ? <div className={styles.auth}>
+         
           <li className={styles.menulistitem}>
             <Link to="/register" style={{ textDecoration: "none", color: "white" }}>
               Register
             </Link>
           </li>
+        </div> :   <div className={styles.auth}>
+          <span style={{ color: "white", fontSize: "20px",cursor:'pointer' }} onClick={toggleModal}>  <FaUserAlt /></span>
+        
         </div>
+        }
+        
       </div>
+      {showModal && <UserModal onLogout={handleLogout} />}
     </header>
   );
 }

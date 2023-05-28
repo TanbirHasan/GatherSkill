@@ -23,8 +23,25 @@ header {
   font-family: 'Roboto', sans-serif;
   color: white;
   cursor: pointer;
-
+  position: relative;
+  display: inline-block;
 }
+
+.menulistitem::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.menulistitem:hover::after {
+  background-color: #ff3366;
+}
+
 
 .navLink{
   text-decoration: none;
@@ -32,18 +49,19 @@ header {
 
 .auth{
   display: flex;
+  align-items: center;
   gap: 5px;
 }
 
 
-/* Search filed style */
+
 .searchbox {
   position: relative;
   display: inline-block;
 }
 
 .searchbox input {
-  padding-right: 30px; /* Space for the search icon */
+  padding-right: 30px; 
   border: 1px solid #ccc;
   border-radius: 20px;
   height: 30px;
@@ -54,4 +72,74 @@ header {
   top: 5px;
   right: 5px;
   color: #aaa;
+}
+
+
+
+
+@media only screen and (max-width: 768px) {
+
+  .logo{
+    width: 20px;
+    height: 28px;
+  }
+
+  .menuToggle {
+    display: none;
+  }
+  .menulinkbox{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+
+  .menuToggleLabel {
+    display: flex;
+  }
+
+
+  .searchbox {
+    display: none;
+  }
+
+  .menuToggle:checked ~ .menulist {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    padding: 10px;
+  }
+
+
+  .menulistitem {
+    margin-bottom: 10px;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    cursor: pointer;
+    text-align: center;
+  }
+
+
+  .menulistitem.active {
+    color: yellow;
+  }
+
+  .searchbox {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+
+  .searchbox input[type="text"] {
+    width: 100%;
+  }
+
+
+  .auth {
+    position: relative;
+    text-align: center;
+  }
 }

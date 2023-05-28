@@ -5,7 +5,7 @@ export default function Banner() {
   return (
     <section className={styles.learnSection}>
         <div className={styles.learnSectionInner}>
-        <div>
+        <div className={styles.learnText}>
          <h3>START TO NEW JOURNEY</h3>
          <h2>Experience a learning<br/> platform that take you <br/>next level</h2>
          <p>World class training and development programs <br/>developed by top teachers</p>

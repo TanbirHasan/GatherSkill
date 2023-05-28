@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./Register.module.css";
 import Layout from "../../Layout/Layout";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "../../../api/axios";
 
 const REGISTER_URL = "/api/v1/register";
@@ -11,6 +11,8 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [agreeTerms, setAgreeTerms] = useState(false);
+
+  const navigate = useNavigate()
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -58,6 +60,7 @@ const Register = () => {
       setEmail("");
       setPassword("");
       setAgreeTerms(false);
+      navigate("/login")
     } catch (err) {
         console.log(err)
          if (err.response.status === 409) {
