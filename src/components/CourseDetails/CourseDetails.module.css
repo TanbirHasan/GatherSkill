@@ -83,6 +83,8 @@
 
 .videoButton {
   padding: 8px 16px;
+  display: flex;
+  justify-content: center;
   background-color: #7D3C98;
   color: #fff;
   border: none;

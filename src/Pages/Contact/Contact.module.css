@@ -24,7 +24,7 @@ label {
   font-weight: bold;
 }
 
-input,
+.Contactinput,
 textarea {
   width: 100%;
   padding: 10px;

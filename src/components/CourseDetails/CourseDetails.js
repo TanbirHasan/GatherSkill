@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   AiFillLock,
   AiOutlineUnlock,
-  AiFillEdit,
   AiFillDelete,
+  AiFillBookmark,
 } from "react-icons/ai";
+import {FaBookmark,FaRegBookmark} from "react-icons/fa"
 import axios from "axios";
-
 import ClipLoader from "react-spinners/ClipLoader";
 import styles from "./CourseDetails.module.css";
 import Layout from "../Layout/Layout";
@@ -25,6 +25,7 @@ export default function CourseDetails() {
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
   const [notes, setNotes] = useState([]);
   const [currentNote, setCurrentNote] = useState("");
+  const [bookmarks, setBookmarks] = useState([]); // State for bookmarked videos
   const [isLoading, setIsLoading] = useState(true);
   let [color, setColor] = useState("#ffffff");
   const location = useLocation();
@@ -79,7 +80,7 @@ export default function CourseDetails() {
     e.preventDefault();
     const timestamp = videoRef.current.currentTime;
     const note = {
-      id: Date.now(), 
+      id: Date.now(),
       timestamp,
       content: currentNote,
     };
@@ -89,6 +90,16 @@ export default function CourseDetails() {
 
   const handleNoteDelete = (noteId) => {
     setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
+  };
+
+  const toggleBookmark = (videoIndex) => {
+    if (bookmarks.includes(videoIndex)) {
+      setBookmarks((prevBookmarks) =>
+        prevBookmarks.filter((bookmark) => bookmark !== videoIndex)
+      );
+    } else {
+      setBookmarks((prevBookmarks) => [...prevBookmarks, videoIndex]);
+    }
   };
 
   function formatTimestamp(timestamp) {
@@ -180,6 +191,16 @@ export default function CourseDetails() {
                             onClick={() => handleSelectVideo(video, videoIndex)}
                           >
                             Video {videoIndex}
+                            <span
+                              className={styles.bookmarkIcon}
+                              onClick={() => toggleBookmark(videoIndex)}
+                            >
+                              {bookmarks.includes(videoIndex) ? (
+                                <FaBookmark />
+                              ) : (
+                                <FaRegBookmark />
+                              )}
+                            </span>
                           </button>
                         </div>
                       ))
